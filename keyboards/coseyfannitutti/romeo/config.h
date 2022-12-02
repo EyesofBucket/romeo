@@ -132,3 +132,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define BOOTMAGIC_LITE_ROW 0
 #define BOOTMAGIC_LITE_COLUMN 0
 */
+
+#define SECURE_UNLOCK_SEQUENCE { { 2, 8 }, { 0, 7 }, { 2, 10 }, { 1, 7 }, { 1, 9 } }
+#define SECURE_UNLOCK_TIMEOUT 5000
+#define SECURE_IDLE_TIMEOUT 5000
+
+#define COMBO_COUNT 1
