@@ -1,22 +1,31 @@
 #include QMK_KEYBOARD_H
 
+#if __has_include("secrets.h")
+# include "secrets.h"
+#endif
 
+#if __has_include("macros.h")
+# include "macros.h"
+#endif
 
 //#pragma region CUSTOM_KEYCODES
 enum custom_keycodes {
     HEARD = SAFE_RANGE,
     TALLY,
+    MECH,
     BAR_L,
     BAR_R,
     OBSIDIAN_VIEW
 };
 
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
+    break;
     case KC_P7:
         if (record->event.pressed) {
             if (secure_is_unlocked()) {
-                SEND_STRING("secret\n");
+                SEND_STRING(SECRET_PHRASE);
                 secure_lock();
                 return false;
             } else {
@@ -27,13 +36,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case HEARD:
         if (record->event.pressed) {
-            SEND_STRING("Did you ever hear the tragedy of Darth Plagueis the Wise?\n\nI thought not.\n\nIt's not a story the Jedi would tell you.\n\nIt's a Sith legend.\n\nDarth Plagueis was a Dark Lord of the Sith, so powerful and so wise he could use the Force to influence the midichlorians to create life...\n\nHe had such a knowledge of the dark side that he could even keep the ones he cared about from dying.\n\nThe dark side of the Force is a pathway to many abilities some consider to be unnatural.\n\nHe became so powerful... the only thing he was afraid of was losing his power, which eventually, of course, he did.\n\nUnfortunately, he taught his apprentice everything he knew, then his apprentice killed him in his sleep.\n\nIronic, he could save others from death, but not himself.");
+            SEND_STRING(MACRO_HEARD);
         }
         return true;
 
     case TALLY:
         if (record->event.pressed) {
-            SEND_STRING("Own a musket for home defense, since that's what the founding fathers intended.\nFour ruffians break into my house.\n\n\"What the devil?\"\n\nAs I grab my powdered wig and Kentucky rifle.\nBlow a golf ball sized hole through the first man, he's dead on the spot.\nDraw my pistol on the second man, miss him entirely because it's smoothbore and nails the neighbors dog.\nI have to resort to the cannon mounted at the top of the stairs loaded with grape shot,\n\n\"Tally ho lads\"\n\nthe grape shot shreds two men in the blast, the sound and extra shrapnel set off car alarms.\nFix bayonet and charge the last terrified rapscallion.\nHe Bleeds out waiting on the police to arrive since triangular bayonet wounds are impossible to stitch up.\n\nJust as the founding fathers intended."); // selects all and copies
+            SEND_STRING(MACRO_TALLY); // selects all and copies
+        }
+        return true;
+
+    case MECH:
+        if (record->event.pressed) {
+            SEND_STRING(MACRO_MECH); // selects all and copies
         }
         return true;
     
@@ -100,7 +115,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
         //#pragma region 1_MACRO_LAYER
         [2] = LAYOUT_all(
-            KC_TRNS, HEARD, TALLY, KC_NO, KC_NO, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
+            KC_TRNS, HEARD, TALLY, MECH, KC_NO, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
             KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
             KC_TRNS, KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, 
             KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
